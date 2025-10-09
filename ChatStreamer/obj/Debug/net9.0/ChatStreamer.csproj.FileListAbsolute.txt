@@ -1,0 +1,63 @@
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/ChatStreamer
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/ChatStreamer.deps.json
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/ChatStreamer.runtimeconfig.json
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/ChatStreamer.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/ChatStreamer.pdb
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Binder.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.FileExtensions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Json.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.FileProviders.Physical.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.FileSystemGlobbing.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/OpenAI.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/System.ClientModel.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/System.Memory.Data.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.csproj.AssemblyReference.cache
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.GeneratedMSBuildEditorConfig.editorconfig
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.AssemblyInfoInputs.cache
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.AssemblyInfo.cs
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.csproj.CoreCompileInputs.cache
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStre.3DF869EF.Up2Date
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/refint/ChatStreamer.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.pdb
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.genruntimeconfig.cache
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/obj/Debug/net9.0/ref/ChatStreamer.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/02 ChatStreamer (gemini-cli)/ChatStreamer/bin/Debug/net9.0/appsettings.json
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.csproj.AssemblyReference.cache
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.GeneratedMSBuildEditorConfig.editorconfig
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.AssemblyInfoInputs.cache
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.AssemblyInfo.cs
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.csproj.CoreCompileInputs.cache
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/ChatStreamer
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/appsettings.json
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/ChatStreamer.deps.json
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/ChatStreamer.runtimeconfig.json
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/ChatStreamer.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/ChatStreamer.pdb
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Binder.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.FileExtensions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Json.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.FileProviders.Physical.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.FileSystemGlobbing.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/OpenAI.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/System.ClientModel.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/System.Memory.Data.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStre.3DF869EF.Up2Date
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/refint/ChatStreamer.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.pdb
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ChatStreamer.genruntimeconfig.cache
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/obj/Debug/net9.0/ref/ChatStreamer.dll
+/Users/matevz/Library/CloudStorage/OneDrive-Personal/Code/Playground/DotNET/ChatStreamer/03 ChatStreamer (fun with command line arguments)/ChatStreamer/bin/Debug/net9.0/Microsoft.Extensions.Configuration.EnvironmentVariables.dll
