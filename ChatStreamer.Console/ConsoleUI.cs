@@ -69,7 +69,7 @@ public class ConsoleUI
 
     private async Task ShowTypingIndicator(CancellationToken token)
     {
-        var animation = new[] { "|", "/", "-", "\\" };
+        var animation = new[] { "|", "/", "-", "\"" };
         var animationIndex = 0;
         while (!token.IsCancellationRequested)
         {
@@ -88,6 +88,9 @@ public class ConsoleUI
 
         switch (command)
         {
+            case "/help":
+                ShowInteractiveHelp();
+                break;
             case "/clear":
                 _chatService.ClearMessages();
                 Console.WriteLine("Conversation cleared.");
@@ -104,11 +107,20 @@ public class ConsoleUI
                 break;
             case "/listmodels":
                 Console.WriteLine("Fetching available models...");
-                var availableModels = await ChatService.GetAvailableModelsAsync(_apiKey);
-                Console.WriteLine("Available models:");
-                foreach (var m in availableModels)
+                try
                 {
-                    Console.WriteLine($"- {m}");
+                    var availableModels = await ChatService.GetAvailableModelsAsync(_apiKey);
+                    Console.WriteLine("Available models:");
+                    foreach (var m in availableModels)
+                    {
+                        Console.WriteLine($"- {m}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Error: {ex.Message}");
+                    Console.ResetColor();
                 }
                 break;
             case "/exit":
@@ -119,6 +131,18 @@ public class ConsoleUI
                 Console.WriteLine($"Unknown command: {command}");
                 break;
         }
+    }
+
+    private void ShowInteractiveHelp()
+    {
+        Console.WriteLine("Available commands:");
+        Console.WriteLine("  /help\t\t\tShow this help message.");
+        Console.WriteLine("  /clear\t\tClear the current conversation.");
+        Console.WriteLine("  /save <filename>\tSave the conversation to a file.");
+        Console.WriteLine("  /load <filename>\tLoad a conversation from a file.");
+        Console.WriteLine("  /model <model_name>\tSwitch to a different chat model.");
+        Console.WriteLine("  /listmodels\t\tList all available models.");
+        Console.WriteLine("  /exit\t\t\tExit the application.");
     }
 
     private void SaveConversation(string fileName)
@@ -173,4 +197,3 @@ public class ConsoleUI
         }
     }
 }
-

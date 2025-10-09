@@ -75,22 +75,32 @@ public class Program
         }
 
         // Validate the model
-        var validModels = await ChatService.GetAvailableModelsAsync(apiKey);
-        if (!validModels.Contains(model))
+        try
+        {
+            var validModels = await ChatService.GetAvailableModelsAsync(apiKey);
+            if (!validModels.Any() || !validModels.Contains(model))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Error: Model '{model}' is not valid or no models could be fetched.");
+                if (validModels.Any())
+                {
+                    Console.WriteLine($"Available models are: {string.Join(", ", validModels)}");
+                }
+                Console.ResetColor();
+                return;
+            }
+        }
+        catch (Exception ex)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Error: Invalid model specified: {model}");
-            Console.WriteLine($"Available models are: {string.Join(", ", validModels)}");
+            Console.WriteLine(ex.Message);
             Console.ResetColor();
             return;
         }
 
         Console.WriteLine($"> Model: {model}");
         Console.WriteLine($"> System Prompt: {systemPrompt}");
-        Console.WriteLine("> Type '/exit' to quit");
-        Console.WriteLine("> Use commands like /clear (clears conversation)");
-        Console.WriteLine("                    /load, /save (load/save conversations)");
-        Console.WriteLine("                    /listmodels, /model (list models, set model)");
+        Console.WriteLine("> Type '/help' for a list of commands or '/exit' to quit.");
 
         var chatService = new ChatService(apiKey, model, systemPrompt);
         var consoleUI = new ConsoleUI(chatService, openAiSettings, apiKey);
