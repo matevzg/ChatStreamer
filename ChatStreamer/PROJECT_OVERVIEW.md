@@ -1,6 +1,6 @@
 # Project Overview
 
-This project is a .NET 9 console application that demonstrates how to create an interactive chat with the OpenAI API. It uses the official OpenAI .NET SDK to stream chat completions and maintain a conversation history.
+This project is a .NET console application that demonstrates how to create an interactive chat with the OpenAI API. It uses the official OpenAI .NET SDK to stream chat completions and maintain a conversation history.
 
 ## Building and Running
 
