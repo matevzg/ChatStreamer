@@ -1,16 +1,21 @@
+
 #nullable enable
 
 using OpenAI.Chat;
+using System;
+using System.Linq;
 
 public class SerializableChatMessage
 {
     public string Role { get; set; }
     public string Content { get; set; }
+    public DateTime Timestamp { get; set; }
 
     public SerializableChatMessage()
     {
         Role = string.Empty;
         Content = string.Empty;
+        Timestamp = DateTime.UtcNow;
     }
 
     public SerializableChatMessage(ChatMessage message)
@@ -22,7 +27,8 @@ public class SerializableChatMessage
             AssistantChatMessage => "Assistant",
             _ => throw new NotSupportedException("Unsupported message type.")
         };
-        Content = message.Content?.ToString() ?? string.Empty;
+        Content = string.Join(Environment.NewLine, message.Content.Select(part => part.Text));
+        Timestamp = DateTime.UtcNow;
     }
 
     public ChatMessage ToChatMessage()
@@ -36,3 +42,4 @@ public class SerializableChatMessage
         };
     }
 }
+

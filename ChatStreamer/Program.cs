@@ -87,10 +87,13 @@ public class Program
 
         Console.WriteLine($"> Model: {model}");
         Console.WriteLine($"> System Prompt: {systemPrompt}");
-        Console.WriteLine("> Type '/exit' to quit the chat, or use commands like /clear, /save, /load, /model.");
+        Console.WriteLine("> Type '/exit' to quit");
+        Console.WriteLine("> Use commands like /clear (clears conversation)");
+        Console.WriteLine("                    /load, /save (load/save conversations)");
+        Console.WriteLine("                    /listmodels, /model (list models, set model)");
 
         var chatService = new ChatService(apiKey, model, systemPrompt);
-        var consoleUI = new ConsoleUI(chatService, openAiSettings);
+        var consoleUI = new ConsoleUI(chatService, openAiSettings, apiKey);
 
         if (!string.IsNullOrEmpty(loadFile))
         {

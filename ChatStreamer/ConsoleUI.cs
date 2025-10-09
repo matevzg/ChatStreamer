@@ -13,11 +13,13 @@ public class ConsoleUI
 {
     private readonly ChatService _chatService;
     private readonly OpenAISettings _openAiSettings;
+    private readonly string _apiKey;
 
-    public ConsoleUI(ChatService chatService, OpenAISettings openAiSettings)
+    public ConsoleUI(ChatService chatService, OpenAISettings openAiSettings, string apiKey)
     {
         _chatService = chatService;
         _openAiSettings = openAiSettings;
+        _apiKey = apiKey;
     }
 
     public async Task StartAsync()
@@ -34,7 +36,7 @@ public class ConsoleUI
 
             if (userInput.StartsWith("/"))
             {
-                HandleCommand(userInput);
+                await HandleCommand(userInput);
                 continue;
             }
 
@@ -78,7 +80,7 @@ public class ConsoleUI
         }
     }
 
-    private void HandleCommand(string userInput)
+    private async Task HandleCommand(string userInput)
     {
         var parts = userInput.Trim().ToLower().Split(' ', 2);
         var command = parts[0];
@@ -98,7 +100,16 @@ public class ConsoleUI
                 break;
             case "/model":
                 _chatService.SetModel(args);
-                Console.WriteLine($"Model set to: {args}");
+                Console.WriteLine($"Model set to: {args}.");
+                break;
+            case "/listmodels":
+                Console.WriteLine("Fetching available models...");
+                var availableModels = await ChatService.GetAvailableModelsAsync(_apiKey);
+                Console.WriteLine("Available models:");
+                foreach (var m in availableModels)
+                {
+                    Console.WriteLine($"- {m}");
+                }
                 break;
             case "/exit":
                 Console.WriteLine("Goodbye!");
@@ -123,11 +134,11 @@ public class ConsoleUI
             var serializableMessages = _chatService.Messages.Select(m => new SerializableChatMessage(m)).ToList();
             var json = JsonSerializer.Serialize(serializableMessages, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(fileName, json);
-            Console.WriteLine($"Conversation saved to {fileName}");
+            Console.WriteLine($"Conversation saved to {fileName}.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error saving conversation: {ex.Message}");
+            Console.WriteLine($"Error saving conversation: {ex.Message}.");
         }
     }
 
@@ -148,43 +159,18 @@ public class ConsoleUI
         try
         {
             var json = File.ReadAllText(fileName);
-            var mg1Messages = JsonSerializer.Deserialize<List<Mg1ChatMessage>>(json);
-            if (mg1Messages != null)
+            var serializableMessages = JsonSerializer.Deserialize<List<SerializableChatMessage>>(json);
+            if (serializableMessages != null)
             {
-                var messages = new List<ChatMessage>();
-                if (mg1Messages.Count > 0)
-                {
-                    messages.Add(ChatMessage.CreateSystemMessage(mg1Messages[0].Content[0].Text));
-                }
-                for (int i = 1; i < mg1Messages.Count; i++)
-                {
-                    if (i % 2 != 0) // Odd index, User
-                    {
-                        messages.Add(ChatMessage.CreateUserMessage(mg1Messages[i].Content[0].Text));
-                    }
-                    else // Even index, Assistant
-                    {
-                        messages.Add(ChatMessage.CreateAssistantMessage(mg1Messages[i].Content[0].Text));
-                    }
-                }
-
+                var messages = serializableMessages.Select(m => m.ToChatMessage()).ToList();
                 _chatService.LoadMessages(messages);
-                Console.WriteLine($"Conversation loaded from {fileName}");
+                Console.WriteLine($"Conversation loaded from {fileName}.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error loading conversation: {ex.Message}");
+            Console.WriteLine($"Error loading conversation: {ex.Message}.");
         }
     }
 }
 
-public class Mg1ChatMessage
-{
-    public required List<Mg1ContentItem> Content { get; set; }
-}
-
-public class Mg1ContentItem
-{
-    public required string Text { get; set; }
-}
