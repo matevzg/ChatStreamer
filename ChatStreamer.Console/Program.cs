@@ -98,9 +98,9 @@ public class Program
             return;
         }
 
-        Console.WriteLine($"> Model: {model}");
-        Console.WriteLine($"> System Prompt: {systemPrompt}");
-        Console.WriteLine("> Type '/help' for a list of commands or '/exit' to quit.");
+        Console.WriteLine($"Model: {model}");
+        Console.WriteLine($"System Prompt: {systemPrompt}");
+        Console.WriteLine(">> Type '/help' for a list of commands or '/exit' to quit.");
 
         var chatService = new ChatService(apiKey, model, systemPrompt);
         var consoleUI = new ConsoleUI(chatService, openAiSettings, apiKey);
@@ -114,8 +114,8 @@ public class Program
         if (initialPromptArgs.Length > 0)
         {
             var initialPrompt = string.Join(' ', initialPromptArgs);
-            Console.WriteLine($"[user] {initialPrompt}");
-            Console.Write("[assistant] ");
+            Console.WriteLine($"[You] {initialPrompt}");
+            Console.Write("[Assistant] ");
             await foreach (var part in chatService.GetChatResponseStreamingAsync(initialPrompt))
             {
                 Console.Write(part);

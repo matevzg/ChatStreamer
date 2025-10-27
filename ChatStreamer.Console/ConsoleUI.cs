@@ -26,9 +26,8 @@ public class ConsoleUI
     {
         while (true)
         {
-            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("[user] ");
+            Console.Write("[You] ");
             Console.ResetColor();
             var userInput = Console.ReadLine();
 
@@ -47,7 +46,7 @@ public class ConsoleUI
     private async Task HandleUserInput(string userInput)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("[assistant] ");
+        Console.Write("[Assistant] ");
         Console.ResetColor();
 
         var cancellationTokenSource = new CancellationTokenSource();
