@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
 
-#nullable enable
-
 public class Program
 {
     public static async Task Main(string[] args)
