@@ -1,4 +1,4 @@
-# ChatStreamer
+# Chat Streamer
 
 A .NET application for streaming chat messages.
 

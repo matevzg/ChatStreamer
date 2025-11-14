@@ -68,14 +68,18 @@ public class ConsoleUI
 
     private async Task ShowTypingIndicator(CancellationToken token)
     {
-        var animation = new[] { "|", "/", "-", "\"" };
-        var animationIndex = 0;
+        var frames = new[]
+        {
+            "⠁", "⠂", "⠄", "⡀", "⢀", "⠠", "⠐", "⠈"
+        };
+
+        int index = 0;
         while (!token.IsCancellationRequested)
         {
-            Console.Write(animation[animationIndex]);
+            Console.Write(frames[index] + ' ');
             await Task.Delay(100);
-            Console.Write("\b");
-            animationIndex = (animationIndex + 1) % animation.Length;
+            Console.Write("\b \b"); Console.Write("\b \b");
+            index = (index + 1) % frames.Length;
         }
     }
 
