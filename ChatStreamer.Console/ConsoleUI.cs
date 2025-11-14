@@ -17,6 +17,9 @@ public class ConsoleUI
 
     public ConsoleUI(ChatService chatService, OpenAISettings openAiSettings, string apiKey)
     {
+        // set console encoding to UTF-8
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        
         _chatService = chatService;
         _openAiSettings = openAiSettings;
         _apiKey = apiKey;
