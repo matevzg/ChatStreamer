@@ -68,24 +68,54 @@ public class ConsoleUI
         }
         Console.WriteLine();
     }
-
     private async Task ShowTypingIndicator(CancellationToken token)
     {
         var frames = new[]
         {
-            "⠁", "⠂", "⠄", "⡀", "⢀", "⠠", "⠐", "⠈"
+            "⡿", "⣟", "⣯", "⣷", "⣾", "⣽", "⣻", "⢿"
+        };
+
+        var colors = new[]
+        {
+            ConsoleColor.Red,
+            ConsoleColor.Yellow,
+            ConsoleColor.Green,
+            ConsoleColor.Cyan,
+            ConsoleColor.Blue,
+            ConsoleColor.Magenta,
+            ConsoleColor.White,
+            ConsoleColor.DarkYellow
         };
 
         int index = 0;
+
+        ConsoleColor originalColor = Console.ForegroundColor;
+
+        Console.CursorVisible = false;
+
         while (!token.IsCancellationRequested)
         {
-            Console.Write(frames[index] + ' ');
+            // Apply color for this frame
+            Console.ForegroundColor = colors[index % colors.Length];
+
+            // Write spinner character + one space (EXACTLY two characters)
+            Console.Write(frames[index] + " ");
+
+            // Wait for the next frame
             await Task.Delay(100);
-            Console.Write("\b \b"); Console.Write("\b \b");
+
+            // Erase the spinner + space (two backspaces)
+            Console.Write("\b\b");
+
             index = (index + 1) % frames.Length;
         }
-    }
 
+        // Clean up any leftover spinner
+        Console.Write("  ");   // overwrite two chars
+        Console.Write("\b\b"); // move cursor back
+
+        Console.ForegroundColor = originalColor;
+    }
     private async Task HandleCommand(string userInput)
     {
         var parts = userInput.Trim().ToLower().Split(' ', 2);
