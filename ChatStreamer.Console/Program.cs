@@ -96,9 +96,17 @@ public class Program
             return;
         }
 
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("=================================================");
+        Console.WriteLine("          Welcome to ChatStreamer");
+        Console.WriteLine("=================================================");
+        Console.ResetColor();
         Console.WriteLine($"Model: {model}");
         Console.WriteLine($"System Prompt: {systemPrompt}");
-        Console.WriteLine(">> Type '/help' for a list of commands or '/exit' to quit.");
+        Console.WriteLine("-------------------------------------------------");
+        Console.WriteLine("Type '/help' to see available commands.");
+        Console.WriteLine("Type '/exit' to quit the application.");
+        Console.WriteLine("-------------------------------------------------");
 
         var chatService = new ChatService(apiKey, model, systemPrompt);
         var consoleUI = new ConsoleUI(chatService, openAiSettings, apiKey);
@@ -139,7 +147,7 @@ public static class ProgramHelpers
         Console.WriteLine("Usage: ChatStreamerApp [options] [initial prompt]");
         Console.WriteLine();
         Console.WriteLine("Options:");
-        Console.WriteLine("  /help\t\t\tShow this help message.");
+        Console.WriteLine("  /help\t\t\t\tShow this help message.");
         Console.WriteLine("  /model:<model_name>\t\tSet the OpenAI model to use.");
         Console.WriteLine("  /systemprompt:<prompt>\tSet the system prompt.");
         Console.WriteLine("  /load:<file_name>\t\tLoad a conversation from a file.");
