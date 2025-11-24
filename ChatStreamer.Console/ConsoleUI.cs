@@ -27,6 +27,12 @@ public class ConsoleUI
 
     public async Task StartAsync()
     {
+        // Check if we only have the system message (count == 1)
+        if (_chatService.Messages.Count == 1)
+        {
+            await SendAutomatedMessage("Hi there, please introduce yourself.");
+        }
+
         while (true)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -44,6 +50,16 @@ public class ConsoleUI
 
             await HandleUserInput(userInput);
         }
+    }
+
+    private async Task SendAutomatedMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.Write($"[You, automated] {message}");
+        Console.ResetColor();
+        Console.WriteLine();
+
+        await HandleUserInput(message);
     }
 
     private async Task HandleUserInput(string userInput)
@@ -151,6 +167,7 @@ public class ConsoleUI
                 {
                     _chatService.SetSystemPrompt(args);
                     Console.WriteLine("System prompt updated.");
+                    await SendAutomatedMessage("Hi there, please introduce yourself.");
                 }
                 break;
             case "/listmodels":
@@ -172,14 +189,9 @@ public class ConsoleUI
                 }
                 break;
             case "/exit":
-                string exitMessage = "We are done for this session, thank you.";
+                string exitMessage = "We are done for this session, see you soon. Thank you.";
                 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write($"[You] {exitMessage}");
-                Console.ResetColor();
-                Console.WriteLine();
-
-                await HandleUserInput(exitMessage);
+                await SendAutomatedMessage(exitMessage);
                 Environment.Exit(0);
                 break;
             default:
@@ -196,7 +208,7 @@ public class ConsoleUI
         Console.WriteLine("  /save <filename>\t\tSave the conversation to a file.");
         Console.WriteLine("  /load <filename>\t\tLoad a conversation from a file.");
         Console.WriteLine("  /model <model_name>\t\tSwitch to a different chat model.");
-        Console.WriteLine("  /systemprompt <prompt>\tUpdate the system prompt.");
+        Console.WriteLine("  /systemprompt <prompt>\tDisplay or update the system prompt.");
         Console.WriteLine("  /listmodels\t\t\tList all available models.");
         Console.WriteLine("  /exit\t\t\t\tExit the application.");
     }
