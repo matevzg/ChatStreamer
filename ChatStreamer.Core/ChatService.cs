@@ -9,8 +9,6 @@ using System.Text.Json.Serialization;
 using OpenAI;
 using OpenAI.Chat;
 
-#nullable enable
-
 public class ChatService
 {
     private static List<string>? _availableModels;
@@ -122,6 +120,28 @@ public class ChatService
     public void SetModel(string model)
     {
         _client = new ChatClient(model, _apiKey);
+    }
+
+    public void SetSystemPrompt(string newPrompt)
+    {
+        if (_messages.Count > 0 && _messages[0].Content.Count > 0)
+        {
+            _messages[0] = ChatMessage.CreateSystemMessage(newPrompt);
+        }
+        else
+        {
+             // Should not happen given constructor, but safe fallback
+            _messages.Insert(0, ChatMessage.CreateSystemMessage(newPrompt));
+        }
+    }
+
+    public string GetSystemPrompt()
+    {
+        if (_messages.Count > 0 && _messages[0].Content.Count > 0)
+        {
+            return _messages[0].Content[0].Text;
+        }
+        return string.Empty;
     }
 
     public static async Task<IReadOnlyList<string>> GetAvailableModelsAsync(string apiKey)

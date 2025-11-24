@@ -141,6 +141,18 @@ public class ConsoleUI
                 _chatService.SetModel(args);
                 Console.WriteLine($"Model set to: {args}.");
                 break;
+            case "/systemprompt":
+                if (string.IsNullOrWhiteSpace(args))
+                {
+                    var currentPrompt = _chatService.GetSystemPrompt();
+                    Console.WriteLine($"Current System Prompt: {currentPrompt}");
+                }
+                else
+                {
+                    _chatService.SetSystemPrompt(args);
+                    Console.WriteLine("System prompt updated.");
+                }
+                break;
             case "/listmodels":
                 Console.WriteLine("Fetching available models...");
                 try
@@ -160,7 +172,14 @@ public class ConsoleUI
                 }
                 break;
             case "/exit":
-                Console.WriteLine("Goodbye!");
+                string exitMessage = "We are done for this session, thank you.";
+                
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"[You] {exitMessage}");
+                Console.ResetColor();
+                Console.WriteLine();
+
+                await HandleUserInput(exitMessage);
                 Environment.Exit(0);
                 break;
             default:
@@ -172,13 +191,14 @@ public class ConsoleUI
     private void ShowInteractiveHelp()
     {
         Console.WriteLine("Available commands:");
-        Console.WriteLine("  /help\t\t\tShow this help message.");
-        Console.WriteLine("  /clear\t\tClear the current conversation.");
-        Console.WriteLine("  /save <filename>\tSave the conversation to a file.");
-        Console.WriteLine("  /load <filename>\tLoad a conversation from a file.");
-        Console.WriteLine("  /model <model_name>\tSwitch to a different chat model.");
-        Console.WriteLine("  /listmodels\t\tList all available models.");
-        Console.WriteLine("  /exit\t\t\tExit the application.");
+        Console.WriteLine("  /help\t\t\t\tShow this help message.");
+        Console.WriteLine("  /clear\t\t\tClear the current conversation.");
+        Console.WriteLine("  /save <filename>\t\tSave the conversation to a file.");
+        Console.WriteLine("  /load <filename>\t\tLoad a conversation from a file.");
+        Console.WriteLine("  /model <model_name>\t\tSwitch to a different chat model.");
+        Console.WriteLine("  /systemprompt <prompt>\tUpdate the system prompt.");
+        Console.WriteLine("  /listmodels\t\t\tList all available models.");
+        Console.WriteLine("  /exit\t\t\t\tExit the application.");
     }
 
     private void SaveConversation(string fileName)
