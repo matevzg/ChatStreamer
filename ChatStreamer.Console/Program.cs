@@ -52,8 +52,8 @@ public class Program
             return;
         }
 
-        var model = openAiSettings.Model ?? "gpt-4o";
-        var systemPrompt = openAiSettings.SystemPrompt ?? "You are a helpful assistant.";
+        var model = openAiSettings.Model;
+        var systemPrompt = openAiSettings.SystemPrompt;
         string? loadFile = null;
 
         foreach (var arg in args)

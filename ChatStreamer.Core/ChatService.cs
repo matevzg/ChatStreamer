@@ -168,7 +168,7 @@ public class ChatService
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception("Failed to fetch available models due to a network error. Please check your connection and API key.", ex);
+                throw new Exception("Failed to fetch available models due to a network error. Please check your connection and API key in app settings or OPENAI_API_KEY environment variable.", ex);
             }
             catch (JsonException ex)
             {
