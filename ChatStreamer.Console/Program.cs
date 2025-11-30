@@ -108,7 +108,7 @@ public class Program
         Console.WriteLine("Type '/exit' to quit the application.");
         Console.WriteLine("-------------------------------------------------");
 
-        var chatService = new ChatService(apiKey, model, systemPrompt);
+        var chatService = new ChatService(apiKey, model!, systemPrompt ?? "You are a helpful assistant.");
         var consoleUI = new ConsoleUI(chatService, openAiSettings, apiKey);
 
         if (!string.IsNullOrEmpty(loadFile))
