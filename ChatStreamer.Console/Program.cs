@@ -15,6 +15,12 @@ public class Program
             return;
         }
 
+        Console.CancelKeyPress += (sender, e) =>
+        {
+            Console.CursorVisible = true;
+            Console.ResetColor();
+        };
+
         var config = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -109,27 +115,28 @@ public class Program
         Console.WriteLine("-------------------------------------------------");
 
         var chatService = new ChatService(apiKey, model!, systemPrompt ?? "You are a helpful assistant.");
-        var consoleUI = new ConsoleUI(chatService, openAiSettings, apiKey);
+        
+        var initialPromptArgs = args.Where(a => !a.StartsWith("/")).ToArray();
+        var initialPrompt = initialPromptArgs.Length > 0 ? string.Join(' ', initialPromptArgs) : null;
+        
+        var consoleUI = initialPrompt != null 
+            ? new ConsoleUI(chatService, openAiSettings, apiKey, initialPrompt)
+            : new ConsoleUI(chatService, openAiSettings, apiKey);
 
         if (!string.IsNullOrEmpty(loadFile))
         {
             consoleUI.LoadConversation(loadFile);
         }
 
-        var initialPromptArgs = args.Where(a => !a.StartsWith("/")).ToArray();
-        if (initialPromptArgs.Length > 0)
+        try
         {
-            var initialPrompt = string.Join(' ', initialPromptArgs);
-            Console.WriteLine($"[You] {initialPrompt}");
-            Console.Write("[Assistant] ");
-            await foreach (var part in chatService.GetChatResponseStreamingAsync(initialPrompt))
-            {
-                Console.Write(part);
-            }
-            Console.WriteLine();
+            await consoleUI.StartAsync();
         }
-
-        await consoleUI.StartAsync();
+        finally
+        {
+            Console.CursorVisible = true;
+            Console.ResetColor();
+        }
     }
 }
 

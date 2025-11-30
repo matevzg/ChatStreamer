@@ -14,6 +14,7 @@ public class ConsoleUI
     private readonly ChatService _chatService;
     private readonly OpenAISettings _openAiSettings;
     private readonly string _apiKey;
+    private readonly string? _initialPrompt;
 
     public ConsoleUI(ChatService chatService, OpenAISettings openAiSettings, string apiKey)
     {
@@ -25,31 +26,102 @@ public class ConsoleUI
         _apiKey = apiKey;
     }
 
+    public ConsoleUI(ChatService chatService, OpenAISettings openAiSettings, string apiKey, string initialPrompt)
+        : this(chatService, openAiSettings, apiKey)
+    {
+        _initialPrompt = initialPrompt;
+    }
+
     public async Task StartAsync()
     {
-        // Check if we only have the system message (count == 1)
-        if (_chatService.Messages.Count == 1)
-        {
-            await SendAutomatedMessage("Hi there, please introduce yourself.");
-        }
+        bool isFirstIteration = true;
 
         while (true)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("[You] ");
-            Console.ResetColor();
-            var userInput = Console.ReadLine();
+            string? userInput;
+
+            // Handle initial prompt or automated message on first iteration
+            if (isFirstIteration)
+            {
+                isFirstIteration = false;
+
+                if (!string.IsNullOrEmpty(_initialPrompt))
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write($"[You] {_initialPrompt}");
+                    Console.ResetColor();
+                    Console.WriteLine();
+                    userInput = _initialPrompt;
+                }
+                // Check if we only have the system message (count == 1)
+                else if (_chatService.Messages.Count == 1)
+                {
+                    await SendAutomatedMessage("Hi there, please introduce yourself.");
+                    continue;
+                }
+                else
+                {
+                    // No initial prompt and messages exist, proceed to normal input
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("[You] ");
+                    Console.ResetColor();
+                    userInput = Console.ReadLine();
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("[You] ");
+                Console.ResetColor();
+                userInput = Console.ReadLine();
+            }
 
             if (string.IsNullOrWhiteSpace(userInput)) continue;
 
             if (userInput.StartsWith("/"))
             {
-                await HandleCommand(userInput);
+                if (await HandleCommand(userInput)) return;
                 continue;
             }
 
-            await HandleUserInput(userInput);
+            var shouldExit = await ExecuteWithInputBlocking(() => HandleUserInput(userInput));
+            if (shouldExit) break;
         }
+    }
+
+    private async Task<T> ExecuteWithInputBlocking<T>(Func<Task<T>> asyncOperation)
+    {
+        var cts = new CancellationTokenSource();
+        var inputClearTask = Task.Run(async () =>
+        {
+            while (!cts.Token.IsCancellationRequested)
+            {
+                while (Console.KeyAvailable)
+                {
+                    Console.ReadKey(true);
+                }
+                await Task.Delay(10, cts.Token).ConfigureAwait(false);
+            }
+        }, cts.Token);
+
+        try
+        {
+            return await asyncOperation();
+        }
+        finally
+        {
+            cts.Cancel();
+            try { await inputClearTask; } catch { }
+        }
+    }
+
+    private async Task ExecuteWithInputBlocking(Func<Task> asyncOperation)
+    {
+        await ExecuteWithInputBlocking(async () =>
+        {
+            await asyncOperation();
+            return 0; // Dummy return value
+        });
     }
 
     private async Task SendAutomatedMessage(string message)
@@ -59,10 +131,10 @@ public class ConsoleUI
         Console.ResetColor();
         Console.WriteLine();
 
-        await HandleUserInput(message);
+        await ExecuteWithInputBlocking(() => HandleUserInput(message));
     }
 
-    private async Task HandleUserInput(string userInput)
+    public async Task<bool> HandleUserInput(string userInput)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.Write("[Assistant] ");
@@ -83,6 +155,7 @@ public class ConsoleUI
             Console.Write(part);
         }
         Console.WriteLine();
+        return false;
     }
     private async Task ShowTypingIndicator(CancellationToken token)
     {
@@ -109,30 +182,36 @@ public class ConsoleUI
 
         Console.CursorVisible = false;
 
-        while (!token.IsCancellationRequested)
+        try
         {
-            // Apply color for this frame
-            Console.ForegroundColor = colors[index % colors.Length];
+            while (!token.IsCancellationRequested)
+            {
+                // Apply color for this frame
+                Console.ForegroundColor = colors[index % colors.Length];
 
-            // Write spinner character + one space (EXACTLY two characters)
-            Console.Write(frames[index] + " ");
+                // Write spinner character + one space (EXACTLY two characters)
+                Console.Write(frames[index] + " ");
 
-            // Wait for the next frame
-            await Task.Delay(100);
+                // Wait for the next frame
+                await Task.Delay(100);
 
-            // Erase the spinner + space (two backspaces)
-            Console.Write("\b\b");
+                // Erase the spinner + space (two backspaces)
+                Console.Write("\b\b");
 
-            index = (index + 1) % frames.Length;
+                index = (index + 1) % frames.Length;
+            }
         }
+        finally
+        {
+            // Clean up any leftover spinner
+            Console.Write("  ");   // overwrite two chars
+            Console.Write("\b\b"); // move cursor back
 
-        // Clean up any leftover spinner
-        Console.Write("  ");   // overwrite two chars
-        Console.Write("\b\b"); // move cursor back
-
-        Console.ForegroundColor = originalColor;
+            Console.ForegroundColor = originalColor;
+            Console.CursorVisible = true;
+        }
     }
-    private async Task HandleCommand(string userInput)
+    private async Task<bool> HandleCommand(string userInput)
     {
         var parts = userInput.Trim().ToLower().Split(' ', 2);
         var command = parts[0];
@@ -192,12 +271,12 @@ public class ConsoleUI
                 string exitMessage = "We are done for this session, see you soon. Thank you.";
                 
                 await SendAutomatedMessage(exitMessage);
-                Environment.Exit(0);
-                break;
+                return true;
             default:
                 Console.WriteLine($"Unknown command: {command}");
                 break;
         }
+        return false;
     }
 
     private void ShowInteractiveHelp()
