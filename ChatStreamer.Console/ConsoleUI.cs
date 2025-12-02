@@ -9,6 +9,10 @@ using OpenAI.Chat;
 
 #nullable enable
 
+/// <summary>
+/// Manages the console-based user interface for the ChatStreamer application.
+/// Handles user input, displays AI responses with streaming, manages typing indicators, and processes commands.
+/// </summary>
 public class ConsoleUI
 {
     private readonly ChatService _chatService;
@@ -16,9 +20,15 @@ public class ConsoleUI
     private readonly string _apiKey;
     private readonly string? _initialPrompt;
 
+    /// <summary>
+    /// Initializes a new instance of the ConsoleUI class.
+    /// </summary>
+    /// <param name="chatService">The chat service for handling AI interactions.</param>
+    /// <param name="openAiSettings">OpenAI configuration settings.</param>
+    /// <param name="apiKey">The OpenAI API key.</param>
     public ConsoleUI(ChatService chatService, OpenAISettings openAiSettings, string apiKey)
     {
-        // set console encoding to UTF-8
+        // Set console encoding to UTF-8 for proper character display
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         
         _chatService = chatService;
@@ -26,12 +36,27 @@ public class ConsoleUI
         _apiKey = apiKey;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the ConsoleUI class with an initial prompt.
+    /// </summary>
+    /// <param name="chatService">The chat service for handling AI interactions.</param>
+    /// <param name="openAiSettings">OpenAI configuration settings.</param>
+    /// <param name="apiKey">The OpenAI API key.</param>
+    /// <param name="initialPrompt">An initial message to send automatically when the UI starts.</param>
     public ConsoleUI(ChatService chatService, OpenAISettings openAiSettings, string apiKey, string initialPrompt)
         : this(chatService, openAiSettings, apiKey)
     {
         _initialPrompt = initialPrompt;
     }
 
+    /// <summary>
+    /// Starts the main console UI loop. Handles user input, processes commands, and displays AI responses.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <remarks>
+    /// On first iteration, sends the initial prompt if provided, or sends an automated greeting if no conversation history exists.
+    /// Continues looping until the user exits via the /exit command.
+    /// </remarks>
     public async Task StartAsync()
     {
         bool isFirstIteration = true;
@@ -89,6 +114,16 @@ public class ConsoleUI
         }
     }
 
+    /// <summary>
+    /// Executes an asynchronous operation while blocking and discarding user keyboard input.
+    /// </summary>
+    /// <typeparam name="T">The return type of the async operation.</typeparam>
+    /// <param name="asyncOperation">The async operation to execute.</param>
+    /// <returns>The result of the async operation.</returns>
+    /// <remarks>
+    /// This prevents user input from appearing in the console while the AI is generating a response.
+    /// A background task continuously clears the keyboard buffer until the operation completes.
+    /// </remarks>
     private async Task<T> ExecuteWithInputBlocking<T>(Func<Task<T>> asyncOperation)
     {
         var cts = new CancellationTokenSource();
@@ -115,6 +150,12 @@ public class ConsoleUI
         }
     }
 
+    /// <summary>
+    /// Executes an asynchronous operation while blocking and discarding user keyboard input.
+    /// Non-generic overload for operations that don't return a value.
+    /// </summary>
+    /// <param name="asyncOperation">The async operation to execute.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     private async Task ExecuteWithInputBlocking(Func<Task> asyncOperation)
     {
         await ExecuteWithInputBlocking(async () =>
@@ -124,6 +165,15 @@ public class ConsoleUI
         });
     }
 
+    /// <summary>
+    /// Sends an automated message (not from user input) and displays the AI's response.
+    /// </summary>
+    /// <param name="message">The automated message to send.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <remarks>
+    /// Used for initial greetings or automated prompts after system prompt changes.
+    /// The message is labeled as "[You, automated]" in the console.
+    /// </remarks>
     private async Task SendAutomatedMessage(string message)
     {
         Console.ForegroundColor = ConsoleColor.Green;
@@ -134,18 +184,29 @@ public class ConsoleUI
         await ExecuteWithInputBlocking(() => HandleUserInput(message));
     }
 
+    /// <summary>
+    /// Processes user input and displays the streaming AI response.
+    /// </summary>
+    /// <param name="userInput">The user's message.</param>
+    /// <returns>False (reserved for future use to indicate exit condition).</returns>
+    /// <remarks>
+    /// Shows a typing indicator while waiting for the first response token,
+    /// then streams the response in real-time as tokens arrive from the API.
+    /// </remarks>
     public async Task<bool> HandleUserInput(string userInput)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.Write("[Assistant] ");
         Console.ResetColor();
 
+        // Start typing indicator animation while waiting for first response token
         var cancellationTokenSource = new CancellationTokenSource();
         var indicatorTask = ShowTypingIndicator(cancellationTokenSource.Token);
 
         var firstPart = true;
         await foreach (var part in _chatService.GetChatResponseStreamingAsync(userInput))
         {
+            // Cancel typing indicator and wait for it to clean up before showing response
             if (firstPart)
             {
                 cancellationTokenSource.Cancel();
@@ -157,6 +218,15 @@ public class ConsoleUI
         Console.WriteLine();
         return false;
     }
+    /// <summary>
+    /// Displays an animated typing indicator (spinner) while waiting for the AI response.
+    /// </summary>
+    /// <param name="token">Cancellation token to stop the animation when the first response token arrives.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <remarks>
+    /// Uses a colorful spinning animation with Unicode characters.
+    /// Hides the cursor during animation and cleans up properly when cancelled.
+    /// </remarks>
     private async Task ShowTypingIndicator(CancellationToken token)
     {
         var frames = new[]
@@ -211,6 +281,14 @@ public class ConsoleUI
             Console.CursorVisible = true;
         }
     }
+    /// <summary>
+    /// Processes slash commands entered by the user.
+    /// </summary>
+    /// <param name="userInput">The command string (must start with '/').</param>
+    /// <returns>True if the application should exit, false otherwise.</returns>
+    /// <remarks>
+    /// Supported commands: /help, /clear, /save, /load, /model, /systemprompt, /listmodels, /exit
+    /// </remarks>
     private async Task<bool> HandleCommand(string userInput)
     {
         var parts = userInput.Trim().ToLower().Split(' ', 2);
@@ -279,6 +357,9 @@ public class ConsoleUI
         return false;
     }
 
+    /// <summary>
+    /// Displays the list of available interactive commands.
+    /// </summary>
     private void ShowInteractiveHelp()
     {
         Console.WriteLine("Available commands:");
@@ -292,6 +373,13 @@ public class ConsoleUI
         Console.WriteLine("  /exit\t\t\t\tExit the application.");
     }
 
+    /// <summary>
+    /// Saves the current conversation to a JSON file.
+    /// </summary>
+    /// <param name="fileName">The name of the file to save to.</param>
+    /// <remarks>
+    /// Serializes all messages (including system, user, and assistant messages) to JSON format.
+    /// </remarks>
     private void SaveConversation(string fileName)
     {
         if (string.IsNullOrWhiteSpace(fileName))
@@ -313,6 +401,13 @@ public class ConsoleUI
         }
     }
 
+    /// <summary>
+    /// Loads a conversation from a JSON file and restores the chat history.
+    /// </summary>
+    /// <param name="fileName">The name of the file to load from.</param>
+    /// <remarks>
+    /// Deserializes messages from JSON and replaces the current conversation history.
+    /// </remarks>
     public void LoadConversation(string fileName)
     {
         if (string.IsNullOrWhiteSpace(fileName))

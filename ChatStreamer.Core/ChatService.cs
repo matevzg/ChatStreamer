@@ -9,8 +9,13 @@ using System.Text.Json.Serialization;
 using OpenAI;
 using OpenAI.Chat;
 
+/// <summary>
+/// Provides a wrapper service for interacting with the OpenAI Chat API.
+/// Manages conversation history, streaming responses, and model configuration.
+/// </summary>
 public class ChatService
 {
+    // Static cache for available models (shared across all instances)
     private static List<string>? _availableModels;
     private static DateTime _availableModelsLastCacheTime;
 
@@ -20,6 +25,12 @@ public class ChatService
 
     private readonly string _apiKey;
 
+    /// <summary>
+    /// Initializes a new instance of the ChatService class.
+    /// </summary>
+    /// <param name="apiKey">The OpenAI API key for authentication.</param>
+    /// <param name="model">The OpenAI model to use (e.g., "gpt-4", "gpt-3.5-turbo").</param>
+    /// <param name="systemPrompt">The system prompt that defines the AI's behavior.</param>
     public ChatService(string apiKey, string model, string systemPrompt)
     {
         _apiKey = apiKey;
@@ -28,8 +39,21 @@ public class ChatService
         _messages = new List<ChatMessage> { ChatMessage.CreateSystemMessage(systemPrompt) };
     }
 
+    /// <summary>
+    /// Gets the read-only list of conversation messages.
+    /// </summary>
     public IReadOnlyList<ChatMessage> Messages => _messages.AsReadOnly();
 
+    /// <summary>
+    /// Sends a user message to the OpenAI API and streams the response back token by token.
+    /// </summary>
+    /// <param name="userInput">The user's message.</param>
+    /// <returns>An async enumerable of response tokens as they arrive from the API.</returns>
+    /// <remarks>
+    /// Adds the user message to conversation history, streams the response, and adds the complete
+    /// assistant response to history. On error, removes the user message and yields an error message.
+    /// Handles authentication errors, rate limits, network errors, and general API errors.
+    /// </remarks>
     public async IAsyncEnumerable<string> GetChatResponseStreamingAsync(string userInput)
     {
         _messages.Add(ChatMessage.CreateUserMessage(userInput));
@@ -38,6 +62,7 @@ public class ChatService
         await using var enumerator = responseStream.GetAsyncEnumerator();
         string? errorMessage = null;
 
+        // Stream response tokens until complete or error occurs
         while (true)
         {
             bool hasNext;
@@ -47,7 +72,9 @@ public class ChatService
             }
             catch (Exception ex)
             {
-                _messages.RemoveAt(_messages.Count - 1); // Remove the user message that caused the error
+                // Remove user message on error to keep conversation history clean
+                _messages.RemoveAt(_messages.Count - 1);
+                // Categorize error for user-friendly message
                 if (ex.Message.Contains("authentication"))
                 {
                     errorMessage = "Invalid API key. Please check your configuration.";
@@ -78,6 +105,7 @@ public class ChatService
                 break;
             }
 
+            // Yield each content token as it arrives
             var update = enumerator.Current;
             if (update.ContentUpdate.Count > 0)
             {
@@ -89,6 +117,7 @@ public class ChatService
             }
         }
 
+        // Add complete assistant response to conversation history
         if (errorMessage == null)
         {
             var fullResponse = string.Join("", assistantResponse);
@@ -104,6 +133,9 @@ public class ChatService
         }
     }
 
+    /// <summary>
+    /// Clears all conversation messages except the system prompt.
+    /// </summary>
     public void ClearMessages()
     {
         var systemMessage = _messages[0];
@@ -111,17 +143,32 @@ public class ChatService
         _messages.Add(systemMessage);
     }
 
+    /// <summary>
+    /// Loads a list of messages into the conversation history, replacing existing messages.
+    /// </summary>
+    /// <param name="messages">The list of messages to load.</param>
     public void LoadMessages(List<ChatMessage> messages)
     {
         _messages.Clear();
         _messages.AddRange(messages);
     }
 
+    /// <summary>
+    /// Changes the OpenAI model used for chat completions.
+    /// </summary>
+    /// <param name="model">The new model name (e.g., "gpt-4", "gpt-3.5-turbo").</param>
     public void SetModel(string model)
     {
         _client = new ChatClient(model, _apiKey);
     }
 
+    /// <summary>
+    /// Updates the system prompt that defines the AI's behavior.
+    /// </summary>
+    /// <param name="newPrompt">The new system prompt text.</param>
+    /// <remarks>
+    /// Replaces the first message in the conversation history (which should be the system message).
+    /// </remarks>
     public void SetSystemPrompt(string newPrompt)
     {
         if (_messages.Count > 0 && _messages[0].Content.Count > 0)
@@ -135,6 +182,10 @@ public class ChatService
         }
     }
 
+    /// <summary>
+    /// Retrieves the current system prompt.
+    /// </summary>
+    /// <returns>The system prompt text, or an empty string if not found.</returns>
     public string GetSystemPrompt()
     {
         if (_messages.Count > 0 && _messages[0].Content.Count > 0)
@@ -144,8 +195,19 @@ public class ChatService
         return string.Empty;
     }
 
+    /// <summary>
+    /// Fetches the list of available OpenAI models from the API.
+    /// </summary>
+    /// <param name="apiKey">The OpenAI API key for authentication.</param>
+    /// <returns>A read-only list of available GPT model names.</returns>
+    /// <remarks>
+    /// Results are cached for 1 hour to reduce API calls.
+    /// Only returns models with IDs starting with "gpt" (chat completion models).
+    /// </remarks>
+    /// <exception cref="Exception">Thrown when the API request fails or response cannot be parsed.</exception>
     public static async Task<IReadOnlyList<string>> GetAvailableModelsAsync(string apiKey)
     {
+        // Check cache (1-hour TTL)
         if (_availableModels == null || (DateTime.Now - _availableModelsLastCacheTime).TotalHours > 1)
         {
             try
@@ -159,8 +221,9 @@ public class ChatService
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 var modelListResponse = JsonSerializer.Deserialize<ModelListResponse>(jsonResponse);
 
+                // Filter for GPT models only (chat completion models)
                 _availableModels = modelListResponse?.Data
-                    .Where(model => model.Id.StartsWith("gpt")) // Filter for chat completion models
+                    .Where(model => model.Id.StartsWith("gpt"))
                     .Select(model => model.Id)
                     .ToList() ?? new List<string>();
 
@@ -179,14 +242,26 @@ public class ChatService
     }
 }
 
+/// <summary>
+/// Represents the response from the OpenAI models API endpoint.
+/// </summary>
 public class ModelListResponse
 {
+    /// <summary>
+    /// Gets or sets the list of available models.
+    /// </summary>
     [JsonPropertyName("data")]
     public List<Model> Data { get; set; } = new List<Model>();
 }
 
+/// <summary>
+/// Represents a single OpenAI model.
+/// </summary>
 public class Model
 {
+    /// <summary>
+    /// Gets or sets the model ID (e.g., "gpt-4", "gpt-3.5-turbo").
+    /// </summary>
     [JsonPropertyName("id")]
     public string Id { get; set; } = string.Empty;
 }
